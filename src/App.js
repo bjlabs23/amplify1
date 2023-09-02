@@ -177,7 +177,7 @@ const App = ({ signOut }) => {
               setTabValue(newValue)
           }}
           aria-label="tests">
-          <Tab label="Test A"  {...a11yProps(0)} />
+          <Tab label="NotesApp"  {...a11yProps(0)} />
           <Tab label="Test B"  {...a11yProps(1)} />
           <Tab label="Test C"  {...a11yProps(2)} />
       </Tabs>
