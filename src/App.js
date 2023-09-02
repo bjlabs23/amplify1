@@ -1,4 +1,9 @@
 import React, { useState, useEffect } from "react";
+import PropTypes from 'prop-types';
+import { Box } from '@mui/material'
+import Tabs from '@mui/material/Tabs';
+import Tab from '@mui/material/Tab';
+
 import "./App.css";
 import "@aws-amplify/ui-react/styles.css";
 import { API, Storage } from "aws-amplify";
@@ -17,6 +22,32 @@ import {
   createNote as createNoteMutation,
   deleteNote as deleteNoteMutation,
 } from "./graphql/mutations";
+
+function TabPanel(props) {
+  const { children, value, index, ...other } = props;
+  
+  return (
+      <Box
+          role="tabpanel"
+          hidden={value !== index}
+          id={`simple-tabpanel-${index}`}
+          aria-labelledby={`simple-tab-${index}`}
+          {...other}
+      >
+      {value === index && (
+          <Box sx={{ p: 3 }}>
+              {children}
+          </Box>
+      )}
+      </Box>
+  );
+}
+
+TabPanel.propTypes = {
+  children: PropTypes.node,
+  index: PropTypes.number.isRequired,
+  value: PropTypes.number.isRequired,
+};
 
 const App = ({ signOut }) => {
   const [notes, setNotes] = useState([]);
@@ -68,8 +99,17 @@ const App = ({ signOut }) => {
     });
   }
 
-  return (
-    <View className="App">
+  function a11yProps(index) {
+    return {
+        id: `simple-tab-${index}`,
+        'aria-controls': `simple-tabpanel-${index}`,
+    };
+  }
+
+  const [tabValue,setTabValue] = useState(0)
+
+  function testA() {
+    return (<View className="App">
       <Heading level={1}>My Notes App</Heading>
       <View as="form" margin="3rem 0" onSubmit={createNote}>
         <Flex direction="row" justifyContent="center">
@@ -127,8 +167,31 @@ const App = ({ signOut }) => {
         ))}
       </View>
       <Button onClick={signOut}>Sign Out</Button>
-    </View>
-  );
+    </View>)
+  }
+
+  return (<Box>
+    <Box>
+      <Tabs value={tabValue}
+          onChange={(event,newValue)=>{
+              setTabValue(newValue)
+          }}
+          aria-label="tests">
+          <Tab label="Test A"  {...a11yProps(0)} />
+          <Tab label="Test B"  {...a11yProps(1)} />
+          <Tab label="Test C"  {...a11yProps(2)} />
+      </Tabs>
+      <TabPanel value={tabValue} index={0}>
+        {testA()}
+      </TabPanel>
+      <TabPanel value={tabValue} index={1}>
+        <h2>B</h2>
+      </TabPanel>
+      <TabPanel value={tabValue} index={2}>
+        <h2>C</h2>
+      </TabPanel>
+    </Box>
+  </Box>);
 };
 
 export default withAuthenticator(App);
