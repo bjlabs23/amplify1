@@ -3,7 +3,6 @@ import PropTypes from 'prop-types';
 import { Box } from '@mui/material'
 import Tabs from '@mui/material/Tabs';
 import Tab from '@mui/material/Tab';
-
 import "./App.css";
 import "@aws-amplify/ui-react/styles.css";
 import { API, Storage } from "aws-amplify";
@@ -22,6 +21,32 @@ import {
   createNote as createNoteMutation,
   deleteNote as deleteNoteMutation,
 } from "./graphql/mutations";
+
+//import Fred from 'node-fred';
+//const FRED_API_KEY = process.env.FRED_KEY;
+//const fred = new Fred(FRED_API_KEY);
+/*
+async function getCategory(categoryID) {
+  try {
+      const res = await fred.categories.getCategory(categoryID);
+      console.log('Category', res);
+  } catch (err) {
+      console.error('Error', err);
+  }
+}
+*/
+function getCategory(categoryID) {
+/*
+  fred.categories
+      .getCategory(categoryID)
+      .then((res) => {
+          console.log('Category', res);
+      })
+      .catch((err) => {
+          console.error('Error', err);
+      });
+*/
+}
 
 function TabPanel(props) {
   const { children, value, index, ...other } = props;
@@ -170,6 +195,12 @@ const App = ({ signOut }) => {
     </View>)
   }
 
+  function testB() {
+    return (<div>
+      {getCategory(125)}
+    </div>)
+  }
+
   return (<Box>
     <Box>
       <Tabs value={tabValue}
@@ -177,7 +208,7 @@ const App = ({ signOut }) => {
               setTabValue(newValue)
           }}
           aria-label="tests">
-          <Tab label="NotesApp"  {...a11yProps(0)} />
+          <Tab label="Notes"   {...a11yProps(0)} />
           <Tab label="Test B"  {...a11yProps(1)} />
           <Tab label="Test C"  {...a11yProps(2)} />
       </Tabs>
@@ -185,7 +216,7 @@ const App = ({ signOut }) => {
         {testA()}
       </TabPanel>
       <TabPanel value={tabValue} index={1}>
-        <h2>B</h2>
+        {testB()}
       </TabPanel>
       <TabPanel value={tabValue} index={2}>
         <h2>C</h2>
